@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brave Search - Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #1c1d1f;
+            --surface-color: #2b2b2d;
+            --text-primary: #ffffff;
+            --text-secondary: #9aa0a6;
+            --brave-orange: #fb542b;
+            --accent-color: #8b8edb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            color: var(--text-primary);
+        }
+
+        /* Mobile Container Simulation */
+        .mobile-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% -20%, #2a2a2a 0%, transparent 50%),
+                              radial-gradient(circle at 100% 80%, #222 0%, transparent 40%);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Mock Browser Chrome - Top */
+        .browser-top {
+            display: flex;
+            align-items: center;
+            background-color: #222325;
+            padding: 8px 12px;
+            gap: 12px;
+            border-bottom: 1px solid #333;
+            height: 56px;
+        }
+
+        .url-bar {
+            flex: 1;
+            background-color: #3b3b3d;
+            border-radius: 20px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+
+        .url-bar .material-symbols-outlined {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .browser-icons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-settings {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 60px;
+        }
+
+        .top-settings .material-symbols-outlined {
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Logo Area */
+        .logo-container {
+            margin-top: 140px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .brave-logo {
+            width: 50px;
+            height: 60px;
+            background-color: var(--brave-orange);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lion-face {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .brave-text {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+
+        /* Search Box */
+        .search-box {
+            width: 100%;
+            background-color: var(--surface-color);
+            border-radius: 24px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .search-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-input-row input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-input-row input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-input-row .material-symbols-outlined {
+            color: var(--text-secondary);
+        }
+
+        .search-tools-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tools-left {
+            display: flex;
+            gap: 20px;
+            color: var(--text-secondary);
+        }
+
+        .tools-left .material-symbols-outlined {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .tools-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tools-right .mic-icon {
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .ask-btn {
+            background-color: #3f3f41;
+            border: none;
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .ask-btn .material-symbols-outlined {
+            font-size: 18px;
+            color: var(--accent-color);
+        }
+
+        /* Custom Feature: Shortcuts / Web Apps */
+        .shortcuts-section {
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .shortcuts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 8px;
+        }
+
+        .shortcuts-header h3 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .edit-shortcuts-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            justify-items: center;
+        }
+
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 64px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .shortcut-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: var(--text-primary);
+            transition: background-color 0.2s;
+        }
+
+        .shortcut-item:hover .shortcut-icon {
+            background-color: #3f3f41;
+        }
+
+        .shortcut-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .delete-badge {
+            position: absolute;
+            top: -4px;
+            right: 4px;
+            background-color: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .editing .delete-badge {
+            display: flex;
+        }
+        
+        .editing .shortcut-item {
+            animation: jiggle 0.3s infinite alternate;
+        }
+
+        @keyframes jiggle {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+
+        /* Mock Browser Chrome - Bottom */
+        .browser-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1a1a1c;
+            padding: 12px 24px;
+            border-top: 1px solid #333;
+            padding-bottom: env(safe-area-inset-bottom, 12px);
+        }
+
+        .browser-bottom .material-symbols-outlined {
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .tab-count {
+            border: 2px solid var(--text-secondary);
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+
+        /* Add Modal */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background-color: var(--surface-color);
+            width: 85%;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #1a1a1c;
+            color: white;
+            outline: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .modal-actions button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background-color: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-save {
+            background-color: var(--brave-orange);
+            color: white;
+        }
+        .shortcut-item {
+  touch-action: manipulation;
+}
+
+.move-controls {
+  display: none;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.editing .move-controls {
+  display: flex;
+}
+
+.move-btn {
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #3f3f41;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.shortcut-icon {
+  cursor: pointer;
+}
+
+.add-icon {
+  background-color: transparent;
+  border: 1px dashed #666;
+}
+
+.shortcut-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #2b2b2d;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.shortcut-icon img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.shortcut-icon img {
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+}
+.shortcuts-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 8px;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar (clean look) */
+.shortcuts-grid::-webkit-scrollbar {
+  display: none;
+}
+.shortcuts-grid {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.shortcut-item {
+  flex: 0 0 auto; /* prevents shrinking */
+  width: 70px;
+}
+.shortcuts-grid {
+  scroll-snap-type: x mandatory;
+}
+
+.shortcut-item {
+  scroll-snap-align: start;
+}
+.shortcuts-section {
+  position: relative;
+}
+
+.shortcuts-section::before,
+.shortcuts-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  z-index: 2;
+}
+
+.shortcuts-section::before {
+  left: 0;
+  background: linear-gradient(to right, #1c1d1f, transparent);
+}
+
+.shortcuts-section::after {
+  right: 0;
+  background: linear-gradient(to left, #0c0d0f, transparent);
+}
+.shortcuts-section{
+  background-color: #1f1f2f;
+}
+    </style>
+</head>
+<body>
+<!-- 
+    <div class="mobile-container">
+        
+        <div class="browser-top">
+            <div class="url-bar">
+                <span class="material-symbols-outlined" style="font-size:16px;">lock</span>
+                <span>search.brave.com</span>
+            </div>
+            <div class="browser-icons">
+                <div class="brave-logo" style="width:24px; height:24px; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                    <div class="lion-face" style="width:14px; height:14px;"></div>
+                </div>
+                <div style="width:0; height:0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid #a6a6a6;"></div>
+                <span class="material-symbols-outlined">add</span>
+            </div>
+        </div> -->
+
+        <div class="content">
+
+            <div class="logo-container">
+                <img src="https://cdn.search.brave.com/serp/v1/static/brand/7942229b6fad96d44602d30809b466faa3abd133b80e8300761791be54eb50e2-brave-logo-home-light.svg">
+            </div>
+
+            <div class="search-box">
+                <div class="search-input-row">
+                    <input id="searchInput" type="text" placeholder="Ask anything, find anything...">
+                    <span class="material-symbols-outlined">search</span>
+                </div>
+                <div class="search-tools-row">
+                    <div class="tools-left">
+                        <span class="material-symbols-outlined"><input type="file" id="imagePicker" accept="image/*" style="display:none"><img style="filter: brightness(0) invert(1);" src="https://images.icon-icons.com/3514/PNG/512/gallery_picture_photo_image_icon_221068.png" height="20px"></span>
+                        <span class="material-symbols-outlined" onclick="window.location.href = 'https://search.brave.com/?enable_research=true'">🔭</span>
+                    </div>
+                    <div class="tools-right">
+                        <span class="material-symbols-outlined mic-icon">mic</span>
+                        <button class="ask-btn" onclick="window.location.href='https://search.brave.com/ask?q=&source=llmSuggest'">
+                            <span class="material-symbols-outlined">magic_button</span>
+                            Ask
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shortcuts-section">
+                <div class="shortcuts-header">
+                    <h3>My Apps</h3>
+                    <button class="edit-shortcuts-btn" onclick="toggleEditMode()" id="editBtn">Edit</button>
+                </div>
+                <div class="shortcuts-grid" id="shortcutsGrid"></div>
+            </div>
+
+        </div>
+
+        <!-- <div class="browser-bottom">
+            <span class="material-symbols-outlined">home</span>
+            <span class="material-symbols-outlined">bookmark</span>
+            <span class="material-symbols-outlined">search</span>
+            <div class="tab-count">1</div>
+            <span class="material-symbols-outlined">more_vert</span>
+        </div> -->
+
+        <div class="modal-overlay" id="addModal">
+            <div class="modal">
+                <h2>Add Web App</h2>
+                <input type="text" id="appName" placeholder="Name (e.g. YouTube)">
+                <input type="url" id="appUrl" placeholder="URL (e.g. https://youtube.com)">
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button class="btn-save" onclick="saveApp()">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+  const STORAGE_KEY = "brave_clone_apps_v1";
+  const SEARCH_URL = "https://search.brave.com/search?q=";
+const AI_URL = "https://search.brave.com/ask?q=&source=llmSuggest"; // with AI trigger
+  
+
+  const defaultApps = [
+    { name: "YouTube", url: "https://youtube.com", icon: "play_circle" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "mail" },
+    { name: "ChatGPT", url: "https://chatgpt.com", icon: "smart_toy" },
+    { name: "GitHub", url: "https://github.com", icon: "code" }
+  ];
+
+  const grid = document.getElementById("shortcutsGrid");
+  const editBtn = document.getElementById("editBtn");
+  const modal = document.getElementById("addModal");
+  const nameInput = document.getElementById("appName");
+  const urlInput = document.getElementById("appUrl");
+  const searchInput = document.querySelector(".search-input-row input");
+  const askBtn = document.querySelector(".ask-btn");
+
+  let isEditing = false;
+  let dragFrom = null;
+  let apps = loadApps();
+
+  function loadApps() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return [...defaultApps];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [...defaultApps];
+    } catch {
+      return [...defaultApps];
+    }
+  }
+
+  function saveApps() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(apps));
+  }
+
+  function normalizeUrl(raw) {
+    let url = raw.trim();
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    return url;
+  }
+  
+  function startVoiceSearch() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Voice search not supported in your browser");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-IN"; // good for India
+  recognition.start();
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    searchInput.value = text;
+    goSearch(); // auto search
+  };
+
+  recognition.onerror = () => {
+    alert("Voice recognition failed");
+  };
+}
+//  mic
+document.querySelector(".mic-icon").addEventListener("click", startVoiceSearch);
+
+
+
+function openGallery() {
+  document.getElementById("imagePicker").click();
+}
+
+// go to gallary
+document.querySelector(".tools-left .material-symbols-outlined")
+  .addEventListener("click", openGallery);
+
+  function guessIcon(name, url) {
+    const s = `${name} ${url}`.toLowerCase();
+    if (s.includes("youtube")) return "play_circle";
+    if (s.includes("gmail") || s.includes("mail")) return "mail";
+    if (s.includes("github")) return "code";
+    if (s.includes("chatgpt") || s.includes("openai")) return "smart_toy";
+    if (s.includes("drive")) return "folder";
+    if (s.includes("x.com") || s.includes("twitter")) return "tag";
+    return "language";
+  }
+
+  function goSearch() {
+    const q = searchInput.value.trim();
+    if (!q) return;
+    window.location.href = SEARCH_URL + encodeURIComponent(q);
+  }
+
+  function openApp(url) {
+    if (isEditing) return;
+    window.location.href = url;
+  }
+  function goAI() {
+  const q = searchInput.value.trim();
+  if (!q) return;
+  
+  // Opens Brave AI-style results
+  window.location.href = AI_URL + encodeURIComponent(q) + "&source=web";
+}
+
+  function moveApp(from, to) {
+    if (from === to) return;
+    if (to < 0 || to >= apps.length) return;
+
+    const item = apps.splice(from, 1)[0];
+    apps.splice(to, 0, item);
+    saveApps();
+    renderApps();
+  }
+
+  function deleteApp(event, index) {
+    event.stopPropagation();
+    apps.splice(index, 1);
+    saveApps();
+    renderApps();
+  }
+
+  function toggleEditMode() {
+    isEditing = !isEditing;
+    editBtn.innerText = isEditing ? "Done" : "Edit";
+    renderApps();
+  }
+
+  function openModal() {
+    if (isEditing) toggleEditMode();
+    nameInput.value = "";
+    urlInput.value = "";
+    modal.style.display = "flex";
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+  
+  function getFavicon(url) {
+  try {
+    const domain = new URL(url).hostname;
+   // https://icons.duckduckgo.com/ip3/domain.com.ico
+    return `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+  } catch {
+    return '';
+  }
+}
+
+  function saveApp() {
+    const name = nameInput.value.trim();
+    const rawUrl = urlInput.value.trim();
+
+    if (!name || !rawUrl) {
+      alert("Please enter both name and URL.");
+      return;
+    }
+
+    const url = normalizeUrl(rawUrl);
+    let icon = guessIcon(name, url);
+
+    apps.push({ name, url, icon });
+    saveApps();
+    renderApps();
+    closeModal();
+  }
+
+  function setDragStart(index) {
+    dragFrom = index;
+  }
+
+  function handleDrop(index) {
+    if (dragFrom === null) return;
+    moveApp(dragFrom, index);
+    dragFrom = null;
+  }
+
+  function renderApps() {
+    grid.innerHTML = "";
+
+    apps.forEach((app, index) => {
+      const div = document.createElement("div");
+      div.className = "shortcut-item";
+      div.draggable = isEditing;
+
+      div.innerHTML = `
+  <div class="shortcut-icon">
+    <img src="${getFavicon(app.url)}" onerror="this.src='fallback.png'">
+  </div>
+  <span class="shortcut-name">${app.name}</span>
+
+  <div class="move-controls">
+    <button class="move-btn">↑</button>
+    <button class="move-btn">↓</button>
+  </div>
+
+  <div class="delete-badge">×</div>
+`;
+
+      const icon = div.querySelector(".shortcut-icon");
+      const deleteBadge = div.querySelector(".delete-badge");
+      const upBtn = div.querySelectorAll(".move-btn")[0];
+      const downBtn = div.querySelectorAll(".move-btn")[1];
+
+      icon.addEventListener("click", () => openApp(app.url));
+
+      deleteBadge.addEventListener("click", (e) => deleteApp(e, index));
+
+      upBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moveApp(index, index - 1);
+      });
+
+      downBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moveApp(index, index + 1);
+      });
+
+      div.addEventListener("dragstart", () => setDragStart(index));
+      div.addEventListener("dragover", (e) => e.preventDefault());
+      div.addEventListener("drop", (e) => {
+        e.preventDefault();
+        handleDrop(index);
+      });
+
+      grid.appendChild(div);
+    });
+
+    const addDiv = document.createElement("div");
+    addDiv.className = "shortcut-item";
+    addDiv.onclick = openModal;
+    addDiv.innerHTML = `
+      <div class="shortcut-icon add-icon">
+        <span class="material-symbols-outlined">add</span>
+      </div>
+      <span class="shortcut-name">Add App</span>
+    `;
+    grid.appendChild(addDiv);
+
+    grid.classList.toggle("editing", isEditing);
+  }
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      goSearch();
+    }
+  });
+
+  askBtn.addEventListener("click", goAI);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  renderApps();
+</script>
+
+</body>
+</html>
